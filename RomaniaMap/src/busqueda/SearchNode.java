@@ -16,7 +16,7 @@ public String label ;     // symbolic name
 Object state ;     // defines the state-space
 Object oper;       // operator used to generate this node
 Vector links;      // edges or links to other nodes
-int depth ;        // depth in a tree from start node
+public int depth ;        // depth in a tree from start node
 boolean expanded ; // indicates if node has been expanded
 boolean tested ;   // indicates if node was ever tested 
 float cost=0 ;     // cost to get to this node  

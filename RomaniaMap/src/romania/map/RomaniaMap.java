@@ -87,7 +87,6 @@ public class RomaniaMap {
 	public ArrayList<SearchNode> stateGenerator(SearchNode initialNode, Vector<String> operators){
 		ArrayList<SearchNode> states = new ArrayList<SearchNode>();
 		
-		int depth = 0;
 		
 		for(int i = 0; i < operators.size(); i++){
 			String operator = operators.get(i);
@@ -96,7 +95,7 @@ public class RomaniaMap {
 			int cost = matrix[indexY][indexX];
 			
 			if(cost > 0){
-				states.add(new SearchNode(operator, initialNode, cost, operator, 1));
+				states.add(new SearchNode(operator, initialNode, cost, operator, initialNode.depth+1));
 			}
 		}
 		
