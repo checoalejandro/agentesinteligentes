@@ -1,8 +1,12 @@
 package romania.map;
 
+import java.awt.Label;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Vector;
+
+import busqueda.SearchNode;
 
 public class RomaniaMap {
 	ArrayList<String> cities = new ArrayList<String>();
@@ -13,22 +17,90 @@ public class RomaniaMap {
 		// TODO Auto-generated method stub
 		
 		
-
-		RomaniaMap map = new RomaniaMap();
-		map.addCity("Mexico");
-		map.addCity("GDL");
-		map.addCity("MTY");
-		map.addCity("GRO");
+		// Adjacency Matrix
+		RomaniaMap m1 = new RomaniaMap();
+		m1.addCity("Mexico");
+		m1.addCity("GDL");
+		m1.addCity("MTY");
+		m1.addCity("GRO");
 		
-		map.generateMatrix();
+		m1.generateMatrix();
 		
-		map.addNode("Mexico", "GDL", 100);
-		map.addNode("GDL", "MTY", 80);
-		map.addNode("Mexico", "MTY", 10);
-		map.addNode("GRO", "GDL", 23);
+		m1.addNode("Mexico", "GDL", 100);
+		m1.addNode("GDL", "MTY", 80);
+		m1.addNode("Mexico", "MTY", 10);
+		m1.addNode("GRO", "GDL", 23);
+		m1.addNode("GRO", "Mexico", 63);
+		m1.addNode("Mexico", "GRO", 70);
 		
-		map.printMatrix();
+		m1.printMatrix();
 		
+		// Straight line matrix distance
+		RomaniaMap m2 = new RomaniaMap();
+		m2.addCity("Mexico");
+		m2.addCity("GDL");
+		m2.addCity("MTY");
+		m2.addCity("GRO");
+		
+		m2.generateMatrix();
+		
+		m2.addNode("Mexico", "GDL", 100);
+		m2.addNode("GDL", "MTY", 80);
+		m2.addNode("Mexico", "MTY", 10);
+		m2.addNode("GRO", "GDL", 23);
+		
+		m2.printMatrix();
+		
+		Vector<String> operators = new Vector<String>();
+		
+		operators.add("Mexico");
+		operators.add("GDL");
+		operators.add("MTY");
+		operators.add("GRO");
+		
+		SearchNode initialNode = new SearchNode("Mexico", null, 0, null, 0);
+		
+		ArrayList<SearchNode> newStates = m1.stateGenerator(initialNode, operators);
+		
+		System.out.println();
+		System.out.println();
+		
+		for(int i = 0; i< newStates.size(); i++){
+			System.out.println(newStates.get(i).label);
+		}	
+	}
+	
+	public int getCityIndex(String city){
+		int indexT = -1;
+		for(int i = 0; i < cities.size(); i ++){
+			if(cities.get(i).equals(city)){
+				indexT = i;
+				break;
+			}
+		}
+		
+		return indexT;
+	}
+	
+	
+	
+	public ArrayList<SearchNode> stateGenerator(SearchNode initialNode, Vector<String> operators){
+		ArrayList<SearchNode> states = new ArrayList<SearchNode>();
+		
+		int depth = 0;
+		
+		for(int i = 0; i < operators.size(); i++){
+			String operator = operators.get(i);
+			int indexX = getCityIndex(operator);
+			int indexY = getCityIndex(initialNode.label);
+			int cost = matrix[indexY][indexX];
+			
+			if(cost > 0){
+				states.add(new SearchNode(operator, initialNode, cost, operator, 1));
+			}
+		}
+		
+		return states;
 	}
 	
 	public void printMatrix(){
