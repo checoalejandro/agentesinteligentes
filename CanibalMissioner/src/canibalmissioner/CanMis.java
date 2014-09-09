@@ -78,7 +78,7 @@ public class CanMis {
 		switch(state){
 		case 1:
 			// 1.
-			if(mis - 2 >= 0 && mis -2 >= can){
+			if(mis - 2 >= 0 && (mis -2 >= can || (3-can)<=(3-(mis-2)))){
 				newState = (mis - 2) + "," + can + "," + (state == 1 ? 0 : 1);
 				if(!totalStates.contains(newState)){
 					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(0), depth));
@@ -86,7 +86,7 @@ public class CanMis {
 				}
 			}
 			// 2.
-			if(can - 2 >= 0 && mis >= can -2){
+			if(can - 2 >= 0 && (mis >= can -2 || (3-(can-2))<=(3-mis))){
 				newState = mis + "," + (can - 2) + "," + (state == 1 ? 0 : 1);
 				if(!totalStates.contains(newState)){
 					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(1), depth));
@@ -168,13 +168,13 @@ public class CanMis {
 			can = Integer.parseInt(values[1]);
 			state = Integer.parseInt(values[2]);
 			
-//			if(can>mis){
-//				nodes.remove(i);
-//				if ( (3-can) > (3-mis))
-//					nodes.remove(i);
-//			}
-//			else if ( (3-can) > (3-mis))
-//				nodes.remove(i);
+			if(can>mis && mis!=0){
+				nodes.remove(i);
+				if ( (3-can) > (3-mis) && (3-mis!=0))
+					nodes.remove(i);
+			}
+			else if ( (3-can) > (3-mis) && (3-mis !=0) )
+				nodes.remove(i);
 		}
 		
 		if(nodes.size() > 0){
