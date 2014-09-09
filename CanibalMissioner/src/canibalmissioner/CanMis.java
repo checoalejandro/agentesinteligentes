@@ -39,6 +39,8 @@ public class CanMis {
 		
 		depth = 0;
 		
+		String initialState = "3,3,1";
+		totalStates.add(initialState);
 		SearchNode initialNode = new SearchNode("3,3,1", null, 0, null, 0);
 		buildGraph(initialNode);
 		
@@ -58,61 +60,112 @@ public class CanMis {
 		}
 	}
 	
-	public Vector<SearchNode> nodeMachine(SearchNode initialNode){
-		Vector<SearchNode> nodes = new Vector<SearchNode>();
-		
-		String[] values = initialNode.label.split(",");
-		int mis = Integer.parseInt(values[0]);
-		int can = Integer.parseInt(values[1]);
-		int canoa = Integer.parseInt(values[2]);
-		
-		depth++;
-		return nodes;
-	}
+	ArrayList<String> totalStates = new ArrayList<String>();
 	
 	public Vector<SearchNode> NodeMachine(SearchNode initialNode){
+		
 		Vector<SearchNode> nodes = new Vector<SearchNode>();
 		
 		String[] values = initialNode.label.split(",");
 		int mis = Integer.parseInt(values[0]);
 		int can = Integer.parseInt(values[1]);
-		int canoa = Integer.parseInt(values[2]);
+		int state = Integer.parseInt(values[2]);
 		
 		depth++;
 		
-		// 1.
-		if(mis - 2 >= 0 && mis >= can){
-			nodes.add(new SearchNode((mis - 2) + "," + can + "," + (canoa == 1 ? 0 : 1), initialNode, 0, operators.get(0), depth));
-		}
-		// 2.
-		if(can - 2 >= 0 && mis >= can){
-			nodes.add(new SearchNode(mis + "," + (can - 2) + "," + (canoa == 1 ? 0 : 1), initialNode, 0, operators.get(1), depth));
-		}
-		// 3.
-		if(mis - 1 >= 0 && can - 1 >= 0 && mis >= can){
-			nodes.add(new SearchNode((mis - 1) + "," + (can - 1) + "," + (canoa == 1 ? 0 : 1), initialNode, 0, operators.get(2), depth));
-		}
-		// 4. 
-		if(mis - 1 >= 0 && mis >= can){
-			nodes.add(new SearchNode((mis - 1) + "," + can + "," + (canoa == 1 ? 0 : 1), initialNode, 0, operators.get(3), depth));
-		}
-		// 5.
-		if(can - 1 >= 0 && mis >= can){
-			nodes.add(new SearchNode(mis + "," + (can - 1) + "," + (canoa == 1 ? 0 : 1), initialNode, 0, operators.get(4), depth));
-		}
+		String newState = "";
 		
-		for(int i = 0; i < nodes.size(); i++){
-			values = initialNode.label.split(",");
-			mis = Integer.parseInt(values[0]);
-			can = Integer.parseInt(values[1]);
-			canoa = Integer.parseInt(values[2]);
-			nodes.add(new SearchNode((mis) -1 + "," + can + "," + (canoa == 1 ? 0 : 1), initialNode, 0, operators.get(3), depth));
-			nodes.add(new SearchNode(mis + "," + (can - 1) + "," + (canoa == 1 ? 0 : 1), initialNode, 0, operators.get(3), depth));
+		switch(state){
+		case 1:
+			// 1.
+			if(mis - 2 >= 0 && mis -2 >= can){
+				newState = (mis - 2) + "," + can + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState) && can <= mis && ((3-can)) <= (3-mis)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(0), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 2.
+			if(can - 2 >= 0 && mis >= can){
+				newState = mis + "," + (can - 2) + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(1), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 3.
+			if(mis - 1 >= 0 && can - 1 >= 0 && mis >= can){
+				newState = (mis - 1) + "," + (can - 1) + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(2), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 4. 
+			if(mis - 1 >= 0 && mis >= can){
+				newState = (mis - 1) + "," + can + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(3), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 5.
+			if(can - 1 >= 0 && mis >= can){
+				newState = mis + "," + (can - 1) + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(4), depth));
+					totalStates.add(newState);
+				}
+			}
+			break;
+		case 0:
+			if(mis + 2 <= 3){
+				newState = (mis + 2) + "," + can + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(0), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 2.
+			if(can + 2 <= 3){
+				newState = mis + "," + (can + 2) + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(1), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 3.
+			if(mis + 1 <= 3 && can + 1 <= 3){
+				newState = (mis + 1) + "," + (can + 1) + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(2), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 4. 
+			if(mis + 1 <= 3){
+				newState = (mis + 1) + "," + can + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(3), depth));
+					totalStates.add(newState);
+				}
+			}
+			// 5.
+			if(can + 1 <= 3){
+				newState = mis + "," + (can + 1) + "," + (state == 1 ? 0 : 1);
+				if(!totalStates.contains(newState)){
+					nodes.add(new SearchNode(newState, initialNode, 0, operators.get(4), depth));
+					totalStates.add(newState);
+				}
+			}
+			break;
 		}
 		
 		if(nodes.size() > 0){
 			initialNode.addLink(nodes);
 		}
+		
+		
 		
 		return nodes;
 	}
@@ -133,9 +186,9 @@ public class CanMis {
 	     if (testNode.label.equals(goalState)){
 	    	 System.out.println("FOUND!: " + testNode.label + testNode.oper);
 	    	 SearchNode node = testNode.parent;
-//	    	 System.out.println(node.label + testNode.oper);
-//	    	 System.out.println(node.parent.label + node.oper);
-//	    	 System.out.println(node.parent.parent.label + node.parent.oper);
+	    	 System.out.println(node.label + testNode.oper);
+	    	 System.out.println(node.parent.label + node.oper);
+	    	 System.out.println(node.parent.parent.label + node.parent.oper);
 	    	 while(node.parent != null){
 	    		 System.out.println(node.label + node.oper);
 	    		 node = node.parent;
