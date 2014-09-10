@@ -15,14 +15,14 @@ import java.awt.*;
 //SearchGraph is a container for a set of SearchNodes
 //SearchNodes are stored in a Hashtable so they can be retrieved by name
 //Basic search algorithms are defined here also
-class SearchGraph extends Hashtable {
+public class SearchGraph extends Hashtable {
 /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 String name ;
 
-SearchGraph(String Name) {
+public SearchGraph(String Name) {
  name = Name ;
 }
 

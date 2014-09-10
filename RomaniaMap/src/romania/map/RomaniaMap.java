@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
+import busqueda.SearchGraph;
 import busqueda.SearchNode;
 
 public class RomaniaMap {
@@ -16,6 +17,7 @@ public class RomaniaMap {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+		SearchGraph algorithms = new SearchGraph("");
 		
 		// Adjacency Matrix
 		RomaniaMap m1 = new RomaniaMap();
@@ -59,6 +61,8 @@ public class RomaniaMap {
 		operators.add("GRO");
 		
 		SearchNode initialNode = new SearchNode("Mexico", null, 0, null, 0);
+		
+//		algorithms.bestFirstSearch(initialNode, goalState)
 		
 		ArrayList<SearchNode> newStates = m1.stateGenerator(initialNode, operators);
 		
