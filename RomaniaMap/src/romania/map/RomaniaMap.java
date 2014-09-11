@@ -64,14 +64,31 @@ public class RomaniaMap {
 		
 //		algorithms.bestFirstSearch(initialNode, goalState)
 		
-		ArrayList<SearchNode> newStates = m1.stateGenerator(initialNode, operators);
+//		StateGenerator generator = new StateGenerator(m1.cities, m1.matrix);
+		/*ArrayList<SearchNode> newStates = */
+		m1.generateGraph(initialNode, operators);
 		
-		System.out.println();
-		System.out.println();
+//		System.out.println();
+//		System.out.println();
+//		
+//		for(int i = 0; i< newStates.size(); i++){
+//			System.out.println(newStates.get(i).label);
+//		}	
+	}
+	
+	ArrayList<String> allNodes = new ArrayList<String>();
+	
+	private void generateGraph(SearchNode initialNode, Vector<String> operators){
+		StateGenerator generator = new StateGenerator(cities, matrix);
+		ArrayList<SearchNode> newStates = generator.stateGenerator(initialNode, operators);
 		
-		for(int i = 0; i< newStates.size(); i++){
-			System.out.println(newStates.get(i).label);
-		}	
+		
+		
+		initialNode.links.addAll(newStates);
+		
+		for(int i = 0; i < newStates.size(); i++){
+			
+		}
 	}
 	
 	public int getCityIndex(String city){
