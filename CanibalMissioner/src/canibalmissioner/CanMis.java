@@ -17,6 +17,7 @@ import busqueda.SearchNode;
 
 public class CanMis {
 
+	public int nodes = 0;
 	Vector<String> operators = new Vector<String>();
 	String initial = "3,3,0";
 	int depth = 0;
@@ -44,6 +45,7 @@ public class CanMis {
 		SearchNode initialNode = new SearchNode("3,3,1", null, 0, null, 0);
 		buildGraph(initialNode);
 		
+		
 //		for(int i = 0; i < nodes.size(); i++){
 //			System.out.println(nodes.get(i).label);
 //		}
@@ -55,6 +57,7 @@ public class CanMis {
 			buildGraph(nodes.get(i));
 			SearchNode finalNode = breadthFirstSearch(nodes.get(i), "0,0,0");
 			if(finalNode != null){
+				System.out.println(this.nodes);
 				System.exit(0);
 			}
 		}
@@ -178,6 +181,7 @@ public class CanMis {
 		}
 		
 		if(nodes.size() > 0){
+			this.nodes += nodes.size();
 			initialNode.addLink(nodes);
 		}
 		

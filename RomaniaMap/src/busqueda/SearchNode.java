@@ -15,7 +15,7 @@ public class SearchNode extends Object {
 public String label ;     // symbolic name
 Object state ;     // defines the state-space
 Object oper;       // operator used to generate this node
-public Vector links;      // edges or links to other nodes
+public Vector<SearchNode> links = new Vector<SearchNode>();;      // edges or links to other nodes
 public int depth ;        // depth in a tree from start node
 boolean expanded ; // indicates if node has been expanded
 boolean tested ;   // indicates if node was ever tested 
@@ -62,9 +62,9 @@ public void addLinks(SearchNode n1, SearchNode n2,
             links.addElement(n3) ; links.addElement(n4) ; 
 }
 
-public void addLinks(Vector Nodes) {
+public void addLinks(Vector<SearchNode> Nodes) {
            for (int i=0 ; i < Nodes.size() ; i++) {
-              links.addElement(Nodes.elementAt(i)) ; 
+              links.add(Nodes.get(i)) ; 
            }
 }
 public boolean leaf() { return (links.size() == 0) ; }

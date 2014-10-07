@@ -25,6 +25,10 @@ public class RomaniaMap {
 		m1.addCity("GDL");
 		m1.addCity("MTY");
 		m1.addCity("GRO");
+		m1.addCity("PV");
+		m1.addCity("Tepic");
+		m1.addCity("Morelia");
+		m1.addCity("Cancún");
 		
 		m1.generateMatrix();
 		
@@ -34,8 +38,12 @@ public class RomaniaMap {
 		m1.addNode("GRO", "GDL", 23);
 		m1.addNode("GRO", "Mexico", 63);
 		m1.addNode("Mexico", "GRO", 70);
+		m1.addNode("MTY", "Morelia", 60);
+		m1.addNode("Morelia", "Cancún", 43);
+		m1.addNode("Cancún", "Tepic", 31);
+		m1.addNode("Tepic", "PV",94);
 		
-		m1.printMatrix();
+//		m1.printMatrix();
 		
 		// Straight line matrix distance
 		RomaniaMap m2 = new RomaniaMap();
@@ -51,7 +59,7 @@ public class RomaniaMap {
 		m2.addNode("Mexico", "MTY", 10);
 		m2.addNode("GRO", "GDL", 23);
 		
-		m2.printMatrix();
+//		m2.printMatrix();
 		
 		Vector<String> operators = new Vector<String>();
 		
@@ -60,13 +68,16 @@ public class RomaniaMap {
 		operators.add("MTY");
 		operators.add("GRO");
 		
-		SearchNode initialNode = new SearchNode("Mexico", null, 0, null, 0);
+		SearchNode initialNode = new SearchNode("Mexico:0", null, 0, null, 0);
 		
 //		algorithms.bestFirstSearch(initialNode, goalState)
 		
 //		StateGenerator generator = new StateGenerator(m1.cities, m1.matrix);
 		/*ArrayList<SearchNode> newStates = */
 		m1.generateGraph(initialNode, operators);
+		StateGenerator generator = new StateGenerator(m1.cities, m1.matrix);
+		generator.bestFirstSearch(initialNode, "PV");
+		
 		
 //		System.out.println();
 //		System.out.println();
@@ -78,17 +89,35 @@ public class RomaniaMap {
 	
 	ArrayList<String> allNodes = new ArrayList<String>();
 	
+	public void search(SearchNode initialNode, Object finalstate){
+		
+	}
+	
 	private void generateGraph(SearchNode initialNode, Vector<String> operators){
+		
+		String[] label = initialNode.label.split(":");
+		String city = label[0];
+		int cost = Integer.parseInt(label[1]);
+		
 		StateGenerator generator = new StateGenerator(cities, matrix);
 		ArrayList<SearchNode> newStates = generator.stateGenerator(initialNode, operators);
 		
-		
+		for(int i = 0; i < newStates.size(); i++){
+			if(!allNodes.contains(city+":"+cost+":"+newStates.get(i).label)){
+				allNodes.add(city+":"+cost+":"+newStates.get(i).label);
+			}else{
+				newStates.remove(i);
+			}
+		}
 		
 		initialNode.links.addAll(newStates);
 		
 		for(int i = 0; i < newStates.size(); i++){
-			
+			generateGraph(newStates.get(i), operators);
+			System.out.println(newStates.get(i).label);
 		}
+		
+//		generator.bestFirstSearch(initialNode, "PV");
 	}
 	
 	public int getCityIndex(String city){
